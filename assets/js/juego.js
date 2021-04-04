@@ -54,3 +54,14 @@ const pedirCarta = () => {
 
 pedirCarta();
 
+const valorCarta = ( carta ) => {
+    let valor = carta.substring( 0, carta.length - 1 );
+
+    // isNaN, true si no es un número
+    return isNaN( valor ) ? (valor = ( valor === 'A' ) ? 11 : 10)
+                          : valor *= 1; // Se multiplica por uno para convertir a tipo num
+
+}
+
+console.log( valorCarta( pedirCarta() ) );
+
