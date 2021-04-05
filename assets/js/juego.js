@@ -11,6 +11,14 @@ let deckCartasEnJuego   = [];
 const tiposDeCartas     = ['C', 'D', 'H', 'S'];
 const especiales        = ['A', 'K', 'Q', 'J'];
 
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
+
+// Referencias en el DOM
+const btnPedir = document.querySelector('#btnPedir');
+const smallsPuntaje = document.querySelectorAll('small');
+
 
 // Funcion que crea un nuevo deck de cartas barajeado
 const crearDeck = () => {
@@ -29,7 +37,7 @@ const crearDeck = () => {
 
     deck = _.shuffle( deck );
 
-    console.log(deck);
+    // console.log(deck);
 
     return deck
 }
@@ -52,7 +60,7 @@ const pedirCarta = () => {
     return carta;
 }
 
-pedirCarta();
+// pedirCarta();
 
 const valorCarta = ( carta ) => {
     let valor = carta.substring( 0, carta.length - 1 );
@@ -63,5 +71,19 @@ const valorCarta = ( carta ) => {
 
 }
 
-console.log( valorCarta( pedirCarta() ) );
+// console.log( valorCarta( pedirCarta() ) );
+
+
+// EVENTOS
+
+btnPedir.addEventListener('click', () => {
+    const carta = pedirCarta();
+    // console.log( carta );
+
+    puntosJugador += valorCarta( carta );
+    // console.log( puntosJugador );
+
+    smallsPuntaje[0].innerText = puntosJugador;
+
+});
 
