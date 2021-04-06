@@ -97,6 +97,19 @@ const f_turnoComputadora = ( puntosJugador ) => {
         }
 
     }while( (puntosComputadora < puntosJugador) && ( puntosJugador <=21 ) );
+
+
+    // setTimeOut para que primero se visualice las cartas de la computadora y después el mensaje
+    // con el resultado final
+    setTimeout( () => {
+        if ( puntosComputadora === puntosJugador )
+        alert('Empate!');
+        else if ( puntosJugador <= 21 && (puntosComputadora > 21 || puntosComputadora < puntosJugador))
+            alert('Ganaste!!!');
+        else if ( (puntosJugador < puntosComputadora && puntosComputadora <= 21) || puntosJugador > 21 )
+            alert('Gano la computadora');
+    }, 100);
+
 }
 
 
@@ -132,4 +145,16 @@ btnDetener.addEventListener('click', () => {
 
     f_turnoComputadora(puntosJugador);
 });
+
+btnNuevo.addEventListener( 'click', () => {
+    console.clear(); // Limpiar consola
+    deck = [];
+    crearDeck();
+    console.log(deck);
+    btnPedir.disabled = false;
+    btnDetener.disabled = false;
+    puntosJugador = puntosComputadora = 0;
+    smallsPuntaje[0].innerText = smallsPuntaje[1].innerText = puntosJugador;
+    divCartas[0].innerHTML = divCartas[1].innerHTML = '';
+} );
 
