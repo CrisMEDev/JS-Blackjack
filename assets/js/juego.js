@@ -17,8 +17,10 @@ let puntosComputadora = 0;
 
 // Referencias en el DOM
 const btnPedir = document.querySelector('#btnPedir');
+const btnNuevo = document.querySelector('#btnNuevo');
+const btnDetener = document.querySelector('#btnDetener');
 const smallsPuntaje = document.querySelectorAll('small');
-
+const divCartas = document.querySelectorAll('.cartas');
 
 // Funcion que crea un nuevo deck de cartas barajeado
 const crearDeck = () => {
@@ -32,13 +34,10 @@ const crearDeck = () => {
         for ( let especial of especiales )
         deck.push(especial + tipo);
 
-
     // console.log(deck);
 
     deck = _.shuffle( deck );
-
     // console.log(deck);
-
     return deck
 }
 
@@ -60,8 +59,6 @@ const pedirCarta = () => {
     return carta;
 }
 
-// pedirCarta();
-
 const valorCarta = ( carta ) => {
     let valor = carta.substring( 0, carta.length - 1 );
 
@@ -71,7 +68,36 @@ const valorCarta = ( carta ) => {
 
 }
 
-// console.log( valorCarta( pedirCarta() ) );
+const f_crearCarta = ( carta, jugador ) => {    // 0 jugador, 1 computadora
+    // Agregar la imagen al HTML
+    const nuevaCarta = document.createElement('img');   // Si se crea una instancia de manera global
+                                                        // se remplazara la carta por la ultima puesta por la referencia
+
+    nuevaCarta.src = `assets/cartas/${ carta }.png`;
+    nuevaCarta.classList.add('carta');
+
+    divCartas[jugador].append( nuevaCarta );
+}
+
+// Turno de la computadora
+const f_turnoComputadora = ( puntosJugador ) => {
+    do{
+        const carta = pedirCarta();
+        // console.log( carta );
+
+        puntosComputadora += valorCarta( carta );
+        // console.log( puntosJugador );
+
+        smallsPuntaje[1].innerText = puntosComputadora;
+
+        f_crearCarta( carta, 1 );
+
+        if ( puntosJugador > 21 ){
+            break;
+        }
+
+    }while( (puntosComputadora < puntosJugador) && ( puntosJugador <=21 ) );
+}
 
 
 // EVENTOS
@@ -85,5 +111,25 @@ btnPedir.addEventListener('click', () => {
 
     smallsPuntaje[0].innerText = puntosJugador;
 
+    f_crearCarta( carta, 0 );
+    
+    if ( puntosJugador > 21 ){
+        console.log('Lo siento mucho perdiste :(');
+        f_turnoComputadora( puntosJugador );
+        btnPedir.disabled = true;       // Inhabilita el boton
+        btnDetener.disabled = true;
+    } else if ( puntosJugador === 21 ){
+        console.log('21, Excelente!!! :D');
+        btnPedir.disabled = true;       // Inhabilita el boton
+        btnDetener.disabled = true;
+        f_turnoComputadora( puntosJugador );
+    }
+});
+
+btnDetener.addEventListener('click', () => {
+    btnPedir.disabled = true;
+    btnDetener.disabled = true;
+
+    f_turnoComputadora(puntosJugador);
 });
 
